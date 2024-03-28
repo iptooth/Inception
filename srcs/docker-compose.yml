@@ -1,0 +1,130 @@
+version: '3'
+
+services:
+  mariadb:
+    container_name: mariadb
+    build: ./requirements/mariadb/
+    restart: unless-stopped
+    volumes:
+      - wp_db:/var/lib/mysql/
+    env_file:
+      - .env
+    networks:
+      - inception
+
+  wordpress:
+    container_name: wordpress
+    build: ./requirements/wordpress/
+    restart: unless-stopped
+    volumes:
+      - wp_files:/var/www/html/wordpress/
+    env_file:
+      - .env
+    networks:
+      - inception
+
+  nginx:
+    container_name: nginx
+    build: ./requirements/nginx/
+    restart: unless-stopped
+    ports:
+      - 443:443
+    depends_on:
+      - wordpress
+    volumes:
+      - wp_files:/var/www/html/wordpress/
+    networks:
+      - inception
+
+  redis:
+    container_name: redis
+    build: ./requirements/bonus/redis/
+    restart: unless-stopped
+    env_file:
+      - .env
+    networks:
+      - inception
+
+  ftp:
+    container_name: ftp
+    build: ./requirements/bonus/ftp/
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "21:21"
+      - "20:20"
+    volumes:
+      - wp_files:/var/www/html/
+      - ftp_logs:/var/log/
+      - shared:/shared/
+    env_file:
+      - .env
+    networks:
+      - inception
+
+  site:
+    container_name: site
+    build: ./requirements/bonus/site/
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    networks:
+      - inception
+
+  adminer:
+    container_name: adminer
+    build: ./requirements/bonus/adminer/
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    networks:
+      - inception
+
+  fail2ban:
+    container_name: fail2ban
+    privileged: true
+    build: ./requirements/bonus/fail2ban/
+    restart: unless-stopped
+    depends_on:
+      - ftp
+    volumes:
+      - ftp_logs:/var/log/fail2ban/ftp_logs/
+      - shared:/shared/
+    networks:
+      - inception
+
+volumes:
+  wp_db:
+    driver: local
+    name: wp_db
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/alice/data/wp_db/
+  wp_files:
+    driver: local
+    name: wp_files
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/alice/data/wp_files/
+  ftp_logs:
+    driver: local
+    name: ftp_logs
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/alice/data/ftp_logs/
+  shared:
+    driver: local
+    name: shared
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/alice/data/shared/
+
+networks:
+  inception:
+    name: inception
+    driver: bridge
