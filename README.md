@@ -1,102 +1,87 @@
-# Inception Project - 42 School
+# Inception
 
-Welcome to my **Inception** project! This project is part of the curriculum at **42 School** and involves setting up a complex infrastructure using **Docker** containers to host various services. Each service runs in its own dedicated container, ensuring modularity and ease of management. 
+Welcome to **Inception**, a Docker-based project developed as part of the 42 School curriculum. The goal of this project is to set up a multi-service infrastructure using Docker containers, each running a specific service. These services include Nginx, WordPress, MariaDB, Adminer, Fail2ban, FTP, Redis, and a custom website, all isolated in their own containers.
 
-## Project Overview
+## Table of Contents
 
-The objective of the Inception project is to implement a scalable, multi-container architecture using Docker, where each service is isolated in its own container. The services included in this setup are:
+- [About the Project](#about-the-project)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Services](#services)
+- [Project Structure](#project-structure)
+- [Contributing](#contributing)
+- [License](#license)
 
-- **Nginx** (Web server)
-- **WordPress** (Content Management System)
-- **MariaDB** (Database for WordPress)
-- **Adminer** (Database management tool)
-- **Fail2ban** (Intrusion prevention software)
-- **FTP** (File Transfer Protocol server)
-- **Redis** (In-memory data structure store)
-- **Custom Website** (Hosted on Nginx with WordPress)
+## About the Project
 
-### Key Objectives
-- Use **Docker Compose** to orchestrate multiple containers.
-- Set up persistent storage using Docker volumes.
-- Ensure all containers can communicate securely with each other.
-- Implement security best practices, including the configuration of **Fail2ban**.
-- Deploy and manage a **WordPress** site with a **MariaDB** database backend.
+The **Inception** project is designed to introduce students to the fundamentals of containerization and service orchestration using **Docker**. Each service runs in its own Docker container, ensuring that the infrastructure is modular, scalable, and easy to maintain. The project focuses on implementing a secure and isolated environment for a multi-service web infrastructure.
 
-## Project Architecture
+### Key Objectives:
+- Set up multiple services, each in a dedicated Docker container.
+- Ensure communication between services using Docker networks.
+- Implement persistent storage for services like WordPress and MariaDB.
+- Follow security best practices by setting up **Fail2ban** to protect against brute-force attacks.
 
-The architecture is designed so that each service runs in its own Docker container:
+## Features
 
+- **Multi-container Setup**: Each service is deployed in its own isolated Docker container.
+- **Nginx**: Acts as a reverse proxy and web server for the WordPress site and the custom website.
+- **WordPress**: A CMS with a backend powered by MariaDB.
+- **MariaDB**: A relational database used to store WordPress data.
+- **Adminer**: A lightweight database management tool.
+- **Fail2ban**: Provides basic protection from brute-force attacks.
+- **FTP Server**: A containerized FTP service to allow file transfers.
+- **Redis**: Caches data to improve performance.
+- **Custom Website**: A separate site hosted on the Nginx container.
 
-### Description of Services
+## Installation
 
-- **Nginx**: A high-performance web server and reverse proxy used to serve the WordPress site and the custom website.
-  
-- **WordPress**: A popular open-source CMS platform, running in a separate container with a backend powered by the MariaDB database.
+To set up and run **Inception**, follow these steps:
 
-- **MariaDB**: A relational database used to store data for the WordPress site.
-
-- **Adminer**: A lightweight, easy-to-use database management tool to interact with the MariaDB instance.
-
-- **Fail2ban**: Provides basic protection from brute-force attacks by monitoring log files and banning IP addresses that show malicious behavior.
-
-- **FTP**: A containerized FTP server that allows secure file transfers.
-
-- **Redis**: Acts as a cache for the WordPress site, improving performance by storing frequently accessed data.
-
-- **Custom Website**: Another static or dynamic website hosted separately on the Nginx server.
-
-## Getting Started
-
-### Prerequisites
-
-Before running this project, ensure you have the following installed on your machine:
-
-- Docker
-- Docker Compose
-
-### Installation & Usage
-
-1. Clone the repository:
-
+1. **Clone the repository**:
     ```bash
-    git clone https://github.com/your-username/inception.git
+    git clone https://github.com/yourusername/inception.git
     cd inception
     ```
 
-2. Create the necessary directories for persistent volumes:
-
+2. **Create necessary directories for persistent data**:
     ```bash
     mkdir -p data/nginx data/wordpress data/mariadb data/redis
     ```
 
-3. Build and start the containers:
-
+3. **Start the Docker containers**:
     ```bash
     docker-compose up --build
     ```
 
-4. Access the services:
+4. **Access the services**:
+   - WordPress: `http://localhost`
+   - Adminer: `http://localhost:8080`
+   - Custom Website: `http://localhost:YOUR_CUSTOM_PORT`
+   - FTP: `ftp://localhost:YOUR_FTP_PORT`
 
-    - **WordPress**: Visit `http://localhost` to see the WordPress site.
-    - **Adminer**: Access the Adminer interface at `http://localhost:8080` to manage the MariaDB database.
-    - **Custom Website**: Visit `http://localhost:YOUR_CUSTOM_PORT` to view your additional website.
-    - **FTP**: Connect to the FTP server at `ftp://localhost:YOUR_FTP_PORT`.
-    - **Fail2ban**: Check the container logs to monitor for banned IPs.
+## Usage
 
-### Configuration
+Once the containers are up and running, you can access the different services:
 
-You can adjust environment variables and configurations by editing the `docker-compose.yml` file and the respective configuration files for each service.
+- **WordPress**: A fully functioning CMS where you can create content, manage posts, and interact with MariaDB as the backend.
+- **Adminer**: A web-based database management interface for MariaDB. Login using the credentials defined in the Docker configuration.
+- **Fail2ban**: Automatically monitors and blocks malicious IP addresses. Check logs for banned IPs.
+- **FTP**: Connect using any FTP client to transfer files.
+- **Redis**: Acts as a cache to enhance WordPress performance.
 
-## Project Structure
+### Example Commands:
 
 ```bash
-.
-├── docker-compose.yml          # Docker Compose file
-├── nginx/                      # Nginx configuration
-├── wordpress/                  # WordPress configuration
-├── mariadb/                    # MariaDB configuration
-├── adminer/                    # Adminer configuration
-├── fail2ban/                   # Fail2ban configuration
-├── ftp/                        # FTP server configuration
-├── redis/                      # Redis configuration
-└── custom_website/             # Custom website files
+# Start the Docker services
+docker-compose up --build
+
+# Stop the Docker services
+docker-compose down
+
+# View the logs for a specific container (e.g., Nginx)
+docker logs nginx
+
+# Check for blocked IPs in Fail2ban
+docker logs fail2ban
