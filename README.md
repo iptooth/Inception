@@ -47,7 +47,7 @@ To set up and run **Inception**, follow these steps:
 
 2. **Create necessary directories for persistent data**:
     ```bash
-    mkdir -p data/nginx data/wordpress data/mariadb data/redis
+    mkdir -p /home/alice/data/wp_db /home/alice/data/wp_files /home/alice/data/ftp_logs /home/alice/data/shared
     ```
 
 3. **Start the Docker containers**:
@@ -56,20 +56,21 @@ To set up and run **Inception**, follow these steps:
     ```
 
 4. **Access the services**:
-   - WordPress: `http://localhost`
+   - WordPress: `https://localhost`
    - Adminer: `http://localhost:8080`
-   - Custom Website: `http://localhost:YOUR_CUSTOM_PORT`
-   - FTP: `ftp://localhost:YOUR_FTP_PORT`
+   - Custom Website: `http://localhost:3000`
+   - FTP: Connect via `ftp://localhost:21` (FTP client required)
 
 ## Usage
 
 Once the containers are up and running, you can access the different services:
 
 - **WordPress**: A fully functioning CMS where you can create content, manage posts, and interact with MariaDB as the backend.
-- **Adminer**: A web-based database management interface for MariaDB. Login using the credentials defined in the Docker configuration.
+- **Adminer**: A web-based database management interface for MariaDB. Login using the credentials defined in the `.env` file.
 - **Fail2ban**: Automatically monitors and blocks malicious IP addresses. Check logs for banned IPs.
-- **FTP**: Connect using any FTP client to transfer files.
+- **FTP**: Connect using any FTP client to transfer files between your local machine and the server.
 - **Redis**: Acts as a cache to enhance WordPress performance.
+- **Custom Website**: A separate custom website that runs on Nginx and can be accessed via `http://localhost:3000`.
 
 ### Example Commands:
 
