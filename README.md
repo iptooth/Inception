@@ -47,7 +47,7 @@ To set up and run **Inception**, follow these steps:
 
 2. **Create necessary directories for persistent data**:
     ```bash
-    mkdir -p /home/alice/data/wp_db /home/alice/data/wp_files /home/alice/data/ftp_logs /home/alice/data/shared
+    mkdir -p /home/$USER/data/wp_db /home/$USER/data/wp_files /home/$USER/data/ftp_logs /home/$USER/data/shared
     ```
 
 3. **Start the Docker containers**:
