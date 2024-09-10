@@ -42,7 +42,7 @@ To set up and run **Inception**, follow these steps:
 1. **Clone the repository**:
     ```bash
     git clone https://github.com/yourusername/inception.git
-    cd inception
+    cd Inception
     ```
 
 2. **Create necessary directories for persistent data**:
